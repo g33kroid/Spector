@@ -1,12 +1,5 @@
 termcolor
 netaddr
 SimplePool
-multiping
-Markdown
-cheetah
-pysnmp
-editorconfig
-jsbeautifier
-beautifulsoup4==4.3.2
-wafw00f
-pythonect==0.4.2
+couchDB
+python-nmap

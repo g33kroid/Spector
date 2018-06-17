@@ -2,6 +2,7 @@ import SimplePool
 import nmap
 from termcolor import cprint
 import sys
+from targets_database import save_scan
 
 try:
     nm = nmap.PortScanner()         # instantiate nmap.PortScanner object
@@ -13,9 +14,10 @@ except:
     sys.exit(0)
 
 
+
 def scan_ip(ip):
     cprint("[-] Scanner Started for Target : %s "%ip,'yellow')
-    nm.scan(hosts=ip,arguments='-A -O -sV ')
+    scan_result = nm.scan(hosts=ip,arguments='-A -O -sV ')
     #cprint("[+] Scan %s Complete "%ip,'green')
     for host in nm.all_hosts():
         cprint('----------------------------------------------------')
@@ -54,7 +56,9 @@ def scan_ip(ip):
         for mac in nm[host]['vendor'].keys():
             cprint("Mac Address : %s \tName : %s"%(mac,nm[host]['vendor'][mac]),'green')
         cprint('----------------------------------------------------')
-    cprint("Scanning %s Complete "%ip,'yellow')            
+    cprint("Scanning %s Complete "%ip,'yellow') 
+    cprint("[-] Updating Database Profile ",'yellow')
+    save_scan(ip,'nmap',scan_result)           
     return
 
 def scanner(ips):
