@@ -16,7 +16,7 @@ except:
 def scan_ip(ip):
     cprint("[-] Scanner Started for Target : %s "%ip,'yellow')
     nm.scan(hosts=ip,arguments='-A -O -sV ')
-    cprint("[+] Scan %s Complete "%ip,'green')
+    #cprint("[+] Scan %s Complete "%ip,'green')
     for host in nm.all_hosts():
         cprint('----------------------------------------------------')
         cprint('Host : %s \tHostname : %s' % (host, nm[host].hostname()),'green')
@@ -54,7 +54,7 @@ def scan_ip(ip):
         for mac in nm[host]['vendor'].keys():
             cprint("Mac Address : %s \tName : %s"%(mac,nm[host]['vendor'][mac]),'green')
         cprint('----------------------------------------------------')
-    # cprint("Scanning %s Complete "%ip,'yellow')            
+    cprint("Scanning %s Complete "%ip,'yellow')            
     return
 
 def scanner(ips):
