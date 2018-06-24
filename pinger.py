@@ -7,7 +7,7 @@ from scapy.all import *
 live = []
 def ping_ip (ip):
     try:
-        result = subprocess.check_output('ping -c 3 %s | grep "3 received" ; exit '%ip , shell = True,stderr= subprocess.STDOUT)
+        result = subprocess.check_output('ping -c 3 %s | grep "3 received" ; exit '%ip , shell = True)
         if(result != ''):
             global live 
             live.append(ip)
@@ -43,6 +43,5 @@ def pinger (ips):
             cprint("Pinging %s"%ip,'yellow')
             ping_ip(ip)
     cprint("[-] Live IP Report",'yellow')
-    for i in live :
-        cprint("%s is live"%ip,'green')
+    
     return live

@@ -62,6 +62,9 @@ def scan_ip(ip):
     return
 
 def scanner(ips):
+    cprint("Live IPs to Scan ",'yellow')
+    for ip in ips:
+        cprint("%s is live"%ip,'green')
     pool = SimplePool.ThreadPool()
     for ip in ips:
         job = SimplePool.ThreadJob(scan_ip,ip)

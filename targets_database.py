@@ -18,7 +18,7 @@ def check_db(ip):
         cprint("[-] Checking Profile %s for %s "%(profile,ip),'yellow')
         db = server[profile]
         cprint("[-] Profile Exists : %s"%profile,'yellow')
-    except couchdb.http.ServerError:
+    except couchdb.http.ResourceNotFound:
         profile = "machine_"+str(ip).replace('.','_')
         cprint('[+] Creating New Profile for %s : %s'%(ip,profile) , 'green')
         try:
@@ -31,7 +31,7 @@ def check_db(ip):
 def save_scan(ip,scan_name,results):
     db = check_db(ip)
     try:
-        doc_id = scan_name + "-" + str(uuid4)
+        doc_id = scan_name + "-" + str(uuid4())
         db[doc_id] = results
         cprint("[+] %s scan saved for %s \n[+] Scan ID : %s "%(scan_name,ip,doc_id),'green')
     except couchdb.http.ResourceConflict:
