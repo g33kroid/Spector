@@ -42,6 +42,6 @@ def pinger (ips):
         for ip in ips:
             cprint("Pinging %s"%ip,'yellow')
             ping_ip(ip)
-    cprint("[-] Live IP Report",'yellow')
+    # cprint("[-] Live IP Report",'yellow')
     
     return live

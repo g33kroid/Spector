@@ -3,6 +3,8 @@ from termcolor import cprint
 from socket import error
 from sys import exit
 from uuid import uuid4
+from design_view import add_design_view
+
 
 # Connecting to Local Database
 try:
@@ -38,3 +40,5 @@ def save_scan(ip,scan_name,results):
         doc_id = scan_name + "-" + str(uuid4)
         db[doc_id] = results
         cprint("[+] %s scan saved for %s \n[+] Scan ID : %s "%(scan_name,ip,doc_id),'green')
+    add_design_view(ip)
+    return 

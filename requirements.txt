@@ -3,3 +3,4 @@ netaddr
 SimplePool
 couchDB
 python-nmap
+requests
