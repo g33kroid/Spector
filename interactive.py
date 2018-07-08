@@ -4,6 +4,7 @@ from sys import exit
 from hosts import get_all_scanned_hosts
 from targets_database import save_scan
 from hosts import get_ports
+from scan_host import scan_hosts
 def interactive_mode():
     try:
         cprint("[?] What do you want to do next ? (help) to show commands",'yellow')
@@ -13,6 +14,13 @@ def interactive_mode():
                 cprint("[?] Showing Command list \n[-] scan\n[-] hosts\n[-] update\n[-] exploit\n[-] exit",'white')   
             elif(cmd.lower() == "scan"):
                 cprint("[?] Enumeration Tools:\n[-] NMAP\n[-] NIKTO\n[-] WPSCAN\n[-] Exit",'white')
+                cmd = raw_input("spector/scan > ")
+                while(cmd.lower() != "back"):
+                    if(cmd.lower() == "nmap"):
+                        scan_hosts()
+                    else:
+                        cprint("[x] Under Development")
+                    cmd = raw_input("spector/scan > ")                    
             elif(cmd.lower() == 'hosts'): # Read all the Hosts in DB you can add push JSONs for IPs
                 cprint("---------------------Scanned Host IPs-------------------",'white')
                 get_all_scanned_hosts()
