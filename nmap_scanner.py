@@ -72,4 +72,5 @@ def scanner(ips):
             pool.add_job(job)
         pool.start()
         pool.finish()
+    ips = []
     return

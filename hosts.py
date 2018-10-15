@@ -2,7 +2,7 @@
 import requests
 import couchdb
 from termcolor import cprint
-from design_view import get_all_ports_full, get_all_ports_name, get_all_ports_no
+from design_view import get_all_ports_full, get_all_ports_name, get_all_ports_no,get_os_type
 def get_all_scanned_hosts():
     hosts = []
     res = requests.get("http://localhost:5984/_all_dbs")
@@ -20,12 +20,16 @@ def get_all_scanned_hosts():
     return hosts
 def get_ports():
     ip = raw_input("spector/host > Enter IP: ")
-    options = raw_input("Choose Options\n[1] Port Number Only\n[2] Port Name and Number\n[3] Full Port Details\nspector/hosts > ")
+    options = raw_input("Choose Options\n[1] Port Number Only\n[2] Port Name and Number\n[3] Full Port Details\n[4] OS Type\nspector/hosts > ")
     if(options == "1"):
         get_all_ports_no(ip)
     elif(options == "2"):
         get_all_ports_name(ip)
     elif(options == "3"):
         get_all_ports_full(ip)
+    elif(options == "4"):
+        get_os_type(ip)
     else:
         cprint("[x] No Valid Option Selected ",'red')
+
+    

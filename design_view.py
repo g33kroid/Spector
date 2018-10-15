@@ -25,17 +25,19 @@ def add_design_view(ip):
     cprint("[-] Profile Exists : %s"%profile,'yellow')
     get_all_ports_view = {
    "_id": "_design/search",
-   "_rev": "5-67828929060f773a4b12456f81062740",
    "language": "javascript",
    "views": {
        "get_all_ports": {
-           "map": "function(doc) {\n  keys = [] \n  for(k in doc[\"scan\"]) keys.push(k)\n  ports = [] \n  port_no = []\n  for (p in doc[\"scan\"][keys[0]][\"tcp\"]) ports.push(p)\t\n  emit(doc[\"nmap\"][\"scanstats\"][\"timestr\"],ports )\n}"
+           "map": 'function(doc) {\n  ports = [] \n  port_no = []\n  for (p in doc[\"scan\"]["'+str(ip)+'"][\"tcp\"]) ports.push(p)\t\n  emit(doc[\"nmap\"][\"scanstats\"][\"timestr\"],ports )\n}'
        },
        "get_all_ports_name": {
-           "map": "function(doc) {\n  keys = [] \n  for(k in doc[\"scan\"]) keys.push(k)\n  ports = [] \n  port_no = []\n  for (p in doc[\"scan\"][keys[0]][\"tcp\"]) ports.push(p.toString()+\":\"+doc[\"scan\"][keys[0]][\"tcp\"][p][\"name\"].toString())\t\n  emit(doc[\"nmap\"][\"scanstats\"][\"timestr\"],ports )\n}"
+           "map": 'function(doc) {\n  ports = [] \n  port_no = []\n  for (p in doc[\"scan\"]["'+str(ip)+'"][\"tcp\"]) ports.push(p.toString()+\":\"+doc[\"scan\"]["'+str(ip)+'"][\"tcp\"][p][\"name\"].toString())\t\n  emit(doc[\"nmap\"][\"scanstats\"][\"timestr\"],ports )\n}'
        },
        "get_all_ports_full": {
-           "map": "function(doc) {\n  keys = [] \n  for(k in doc[\"scan\"]) keys.push(k)\n  ports = [] \n  port_no = []\n  for (p in doc[\"scan\"][keys[0]][\"tcp\"]) ports.push(p.toString()+\":\"+doc[\"scan\"][keys[0]][\"tcp\"][p][\"name\"].toString()+\":\"+doc[\"scan\"][keys[0]][\"tcp\"][p][\"version\"].toString())\t\n  emit(doc[\"nmap\"][\"scanstats\"][\"timestr\"],ports )\n}"
+           "map": 'function(doc) {\n  ports = [] \n  port_no = []\n  for (p in doc[\"scan\"]["'+str(ip)+'"][\"tcp\"]) ports.push(p.toString()+\":\"+doc[\"scan\"]["'+str(ip)+'"][\"tcp\"][p][\"name\"].toString()+\":\"+doc[\"scan\"]["'+str(ip)+'"][\"tcp\"][p][\"version\"].toString())\t\n  emit(doc[\"nmap\"][\"scanstats\"][\"timestr\"],ports )\n}'
+       },
+       "os_type": {
+           "map": 'function(doc) {\n emit(doc[\"nmap\"][\"scanstats\"][\"timestr\"],doc["scan"]["'+str(ip)+'"]["osmatch"])\n}'
        }
    }
 }
@@ -102,4 +104,19 @@ def get_all_ports_name(ip):
                 print i + "\t",
             print("\n")    
         result[item.key] = item.value
+    return result
+def get_os_type(ip):
+    result = {}
+    profile = "machine_"+str(ip).replace('.','_')
+    cprint("[-] Checking Profile %s for %s "%(profile,ip),'yellow')
+    db = server[profile]
+    cprint("[-] Profile Exists : %s"%profile,'yellow')
+    cprint("[-] Printing OS Matches Found on every Scan")
+    for item in db.view("search/os_type"):
+        cprint("-----------------------------------------")
+        cprint("Date \t%s"%item.key,'green')
+        cprint("-----------------------------------------")
+        cprint("OS Family\tName\tAccuracy",'yellow')
+        data = item.value
+        print(data)
     return result
